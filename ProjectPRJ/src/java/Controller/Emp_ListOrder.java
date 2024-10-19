@@ -12,6 +12,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 import model.Customer;
@@ -38,9 +39,8 @@ public class Emp_ListOrder extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            String status = request.getParameter("status");
             
-            
+            HttpSession session = request.getSession();
             DAO dao = new DAO();
             Map<Integer, RentalOrder> listOrders = dao.Emp_getListOrders();
             Map<Integer, Customer> listCustomers = dao.Emp_getListCustomers();
@@ -48,7 +48,6 @@ public class Emp_ListOrder extends HttpServlet {
             request.setAttribute("lc", listCustomers);
             
             request.getRequestDispatcher("Emp_ListOrder.jsp").forward(request, response);
-            response.sendRedirect("Emp_ListOrder?status="+status);
         }
     }
 

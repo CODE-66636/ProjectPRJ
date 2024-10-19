@@ -349,6 +349,91 @@ public class DAO extends DBContext {
         return list;
     }
 
+    public Map<Integer, OrderVehicle> Emp_getOrderVehicles(int order_id) {
+        Map<Integer, OrderVehicle> list = new HashMap<>();
+        try {
+            String sql = "select* from OrderVehicle where order_id = " + order_id;
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                OrderVehicle ov = new OrderVehicle();
+                ov.setOrderId(order_id);
+                ov.setOrderVehicleId(rs.getInt("order_vehicle_id"));
+                ov.setPickupDate(LocalDate.parse(rs.getString("pickup_date")));
+                ov.setReturnDate(LocalDate.parse(rs.getString("return_date")));
+                ov.setVehicleId(rs.getInt("vehicle_id"));
+                list.put(ov.getVehicleId(), ov);
+            }
+            st.close();
+            rs.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return list;
+    }
+
+    public void Emp_updateOrderStatus(String status, int order_id) {
+        String sql = """
+                 Update RentalOrder
+                 set status = ?
+                 where order_id = ?
+                 """;
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setString(1, status);
+            pstmt.setInt(2, order_id);
+            int rowsUpdated = pstmt.executeUpdate();
+        } catch (SQLException e) {
+        }
+
+    }
+
+    public void Emp_updateVehicleStatus(String status, int id) {
+        String sql = """
+                 Update Vehicle
+                 set status = ?
+                 where vehicle_id = ?
+                 """;
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setString(1, status);
+            pstmt.setInt(2, id);
+            int rowsUpdated = pstmt.executeUpdate();
+        } catch (SQLException e) {
+        }
+
+    }
+
+    public void Emp_updateStartDate(int order_id) {
+        String sql = """
+                 Update RentalOrder
+                 set start_date = GETDATE(),deposit_paid=1
+                 where order_id = ?
+                 """;
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, order_id);
+            int rowsUpdated = pstmt.executeUpdate();
+        } catch (SQLException e) {
+        }
+
+    }
+
+    public void Emp_updateEndDate(int order_id) {
+        String sql = """
+                 Update RentalOrder
+                                  set end_date = GETDATE()
+                                  where order_id = ?
+                 """;
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, order_id);
+            int rowsUpdated = pstmt.executeUpdate();
+        } catch (SQLException e) {
+        }
+
+    }
+
     public static void main(String[] args) {
         DAO dao = new DAO();
         System.out.println(dao.getAllContractOfUserByStatus(1, "Pending"));

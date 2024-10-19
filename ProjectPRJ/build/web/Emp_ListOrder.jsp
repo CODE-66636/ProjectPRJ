@@ -40,7 +40,7 @@
             if (status == null) {
                 status = "all";
             }
-            if (!status.equalsIgnoreCase("pending") && !status.equalsIgnoreCase("confirmed") && !status.equalsIgnoreCase("cancled") && !status.equalsIgnoreCase("on going") && !status.equalsIgnoreCase("completed")) {
+            if (!status.equalsIgnoreCase("pending") && !status.equalsIgnoreCase("confirmed") && !status.equalsIgnoreCase("cancelled") && !status.equalsIgnoreCase("on going") && !status.equalsIgnoreCase("completed")) {
                 status = "all";
             }
 
@@ -53,7 +53,7 @@
             <option value="all" <%if(status.equalsIgnoreCase("all")){out.println("selected");}%>>All</option>
             <option value="pending" <%if(status.equalsIgnoreCase("pending")){out.println("selected");}%>>Pending</option>
             <option value="confirmed" <%if(status.equalsIgnoreCase("confirmed")){out.println("selected");}%>>Confirmed</option>
-            <option value="cancled" <%if(status.equalsIgnoreCase("cancled")){out.println("selected");}%>>Cancled</option>
+            <option value="cancelled" <%if(status.equalsIgnoreCase("cancled")){out.println("selected");}%>>Cancled</option>
             <option value="on going" <%if(status.equalsIgnoreCase("on going")){out.println("selected");}%>>On Going</option>
             <option value="completed" <%if(status.equalsIgnoreCase("completed")){out.println("selected");}%>>Completed</option>
         </select>
@@ -79,13 +79,14 @@
                 <tr>
                     <td>
                         <div>
-                            ID: <%=oid%>
+                            ID: <%=oid%></br>
                             Create date: <%=listOrders.get(oid).getCreatedAt()%>
                         </div>
                     </td>
                     <td>
                         <div>
                             Customer's name: <%=listCustomers.get(ro.getCustomerId()).getFullName()%>
+                            </br> 
                             Phone number: <%=listCustomers.get(ro.getCustomerId()).getPhoneNumber()%>
                         </div>
                     </td>
@@ -102,7 +103,7 @@
                         <%=ro.getStatus()%>
                     </td>
                     <td>
-                        <a href="#" >Show detail</a>
+                        <a href="Emp_OrderDetail?id=<%=oid%>" >Show detail</a>
                     </td>
                 </tr>
                 <%
