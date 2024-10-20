@@ -82,7 +82,9 @@ public class Emp_UpdateOrder extends HttpServlet {
                     }
                 }
                 else if (update.equalsIgnoreCase("on going")) {
-                    
+                    for (Vehicle v : listVehicles) {
+                            dao.Emp_updateVehicleStatus("rented", v.getVehicleId());
+                    }
                     
                     Date now = new Date();
                     dao.Emp_updateStartDate(id);
@@ -90,7 +92,9 @@ public class Emp_UpdateOrder extends HttpServlet {
                     response.sendRedirect("Emp_OrderDetail?id=" + id);
                 }
                 else if (update.equalsIgnoreCase("completed")) {
-                    
+                    for (Vehicle v : listVehicles) {
+                            dao.Emp_updateVehicleStatus("Available", v.getVehicleId());
+                    }
                     dao.Emp_updateEndDate(id);
                     dao.Emp_updateOrderStatus("completed", id);
                     response.sendRedirect("Emp_OrderDetail?id=" + id);
